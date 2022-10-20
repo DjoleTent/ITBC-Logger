@@ -8,6 +8,7 @@ public class ItbcLoggerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ItbcLoggerApplication.class, args);
+		System.out.println("Hello World!");
 	}
 
 }
