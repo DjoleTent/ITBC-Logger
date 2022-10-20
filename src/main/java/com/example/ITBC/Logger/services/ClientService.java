@@ -1,8 +1,10 @@
 package com.example.ITBC.Logger.services;
 
+import com.example.ITBC.Logger.model.Client;
 import com.example.ITBC.Logger.repository.interfaces.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ClientService {
@@ -11,5 +13,8 @@ public class ClientService {
     @Autowired
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
+    }
+    public List<Client> getAllClients(){
+        return clientRepository.getAllClients();
     }
 }
