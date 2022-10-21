@@ -21,27 +21,32 @@ public class ClientService {
     }
 
     public List<Client> getAllClients() {
-        return clientRepository.getAllClients();
+        return clientRepository.findAll();
     }
+
+//    public void addClient(Client client) {
+//        clientRepository.insertClient(client);
+//    }
 
     public ResponseEntity<Void> insertClient(Client client) {
         if (clientRepository.isDuplicateName(client.getUsername()) != 0 || clientRepository.isDuplicateName(client.getEmail()) != 0) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
-        for( var clientOne : clientRepository.getAllClients()) {
-            if (!clientOne.getEmail().contains("@") || !clientOne.getEmail().contains(".") || clientOne.getEmail().length()<5
-            || clientOne.getUsername().length()<3 || clientOne.getPassword().length()<8) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
+
+
+        if (!client.getEmail().contains("@") || !client.getEmail().contains(".") || client.getEmail().length() < 5
+                || client.getUsername().length() < 3 || client.getPassword().length() < 8) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
+
+        clientRepository.save(client);
 //        client.setId(UUID.randomUUID());
 
 //        clientRepository.getAllClients().add(client);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
-    //email must be valid
-    //username at least 3 characters
-    //password at least 8 characters and one letter and one number
+
+
 }

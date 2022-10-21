@@ -6,13 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Integer> {
-    @Query(value = "SELECT * FROM CLIENTS", nativeQuery = true)
-    List<Client> getAllClients();
+
+    List<Client> findAll();
+
+//    void insertClient(Client client);
 
     @Query(value = "SELECT COUNT(*) FROM CLIENTS WHERE username=:username", nativeQuery = true)
     Integer isDuplicateName(@Param("username") String username);
+
 
 }

@@ -17,13 +17,20 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping("api/clients")
+    @GetMapping("/api/clients")
     public List<Client> showAllClients(){
         return clientService.getAllClients();
     }
 
-    @PostMapping("api/clients/register")
+    @PostMapping("/api/clients/register")
     public ResponseEntity<Void> registerClient(@RequestBody Client client){
         return clientService.insertClient(client);
     }
+
+//    @PostMapping("api/clients/register/save")
+//    public void registerClientSave(@RequestBody Client client){
+//         clientService.addClient(client);
+//    }
+
+
 }
