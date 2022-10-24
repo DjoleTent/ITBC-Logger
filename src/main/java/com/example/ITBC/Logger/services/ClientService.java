@@ -2,13 +2,17 @@ package com.example.ITBC.Logger.services;
 
 import com.example.ITBC.Logger.model.Client;
 import com.example.ITBC.Logger.repository.interfaces.ClientRepository;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -44,7 +48,7 @@ public class ClientService {
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
-    public ResponseEntity<String> loginAccount(String username, String password){
+    public ResponseEntity<Map> loginAccount(String username, String password){
         var user1= clientRepository.isDuplicateName(username);
         var pass1 = clientRepository.isExistPassword(password);
         System.out.println(user1);
@@ -57,7 +61,10 @@ public class ClientService {
 //        if(!acc2.getPassword().equals(password)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 //        }
-        return ResponseEntity.status(HttpStatus.OK).body("token");
+
+        Map<String,String> map = new HashMap<>();
+        map.put("token",username);
+        return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
 
