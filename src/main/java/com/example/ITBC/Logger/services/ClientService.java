@@ -24,9 +24,7 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-//    public void addClient(Client client) {
-//        clientRepository.insertClient(client);
-//    }
+
 
     public ResponseEntity<Void> insertClient(Client client) {
         if (clientRepository.isDuplicateName(client.getUsername()) != 0 || clientRepository.isDuplicateName(client.getEmail()) != 0) {
@@ -39,11 +37,9 @@ public class ClientService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-
+        client.setId(UUID.randomUUID());
         clientRepository.save(client);
-//        client.setId(UUID.randomUUID());
 
-//        clientRepository.getAllClients().add(client);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }

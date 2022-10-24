@@ -13,9 +13,8 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
 
     List<Client> findAll();
 
-//    void insertClient(Client client);
 
-    @Query(value = "SELECT COUNT(*) FROM CLIENTS WHERE username=:username", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM USERS WHERE username=:username", nativeQuery = true)
     Integer isDuplicateName(@Param("username") String username);
 
 

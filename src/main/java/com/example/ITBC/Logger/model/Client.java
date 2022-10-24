@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "Clients")
+@Table(name = "Users")
 public class Client {
     @Id
-    public int id;
+    public UUID id;
     public String username;
     public String password;
     public String email;

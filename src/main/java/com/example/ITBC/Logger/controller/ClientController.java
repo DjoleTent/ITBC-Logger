@@ -27,10 +27,7 @@ public class ClientController {
         return clientService.insertClient(client);
     }
 
-//    @PostMapping("api/clients/register/save")
-//    public void registerClientSave(@RequestBody Client client){
-//         clientService.addClient(client);
-//    }
+
 
 
 }
