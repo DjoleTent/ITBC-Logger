@@ -44,5 +44,21 @@ public class ClientService {
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
+    public ResponseEntity<String> loginAccount(String username, String password){
+        var user1= clientRepository.isDuplicateName(username);
+        var pass1 = clientRepository.isExistPassword(password);
+        System.out.println(user1);
+        System.out.println(pass1);
+        if(user1==0 || pass1==0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+//        var acc2 = clientRepository.findByEmail(account);
+//        if(!acc2.getPassword().equals(password)){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+        return ResponseEntity.status(HttpStatus.OK).body("token");
+    }
+
 
 }
