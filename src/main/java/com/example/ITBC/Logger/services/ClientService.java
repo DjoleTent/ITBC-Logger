@@ -29,7 +29,6 @@ public class ClientService {
     }
 
 
-
     public ResponseEntity<Void> insertClient(Client client) {
         if (clientRepository.isDuplicateName(client.getUsername()) != 0 || clientRepository.isDuplicateName(client.getEmail()) != 0) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -48,22 +47,26 @@ public class ClientService {
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
-    public ResponseEntity<Map> loginAccount(String username, String password){
-        var user1= clientRepository.isDuplicateName(username);
+    public ResponseEntity<Map> loginAccount(String username, String password, String email) {
+        var user1 = clientRepository.isDuplicateName(username);
         var pass1 = clientRepository.isExistPassword(password);
+        var email1 = clientRepository.isDuplicateEmail(email);
         System.out.println(user1);
         System.out.println(pass1);
-        if(user1==0 || pass1==0){
+        System.out.println(email1);
+        if ((user1 == 0 && email1 == 0) || pass1 == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-//        var acc2 = clientRepository.findByEmail(account);
-//        if(!acc2.getPassword().equals(password)){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }
 
-        Map<String,String> map = new HashMap<>();
-        map.put("token",username);
+        String acc1 = null;
+        if (user1 > email1) {
+            acc1 = username;
+        } else {
+            acc1 = email;
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("token", acc1);
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 

@@ -24,6 +24,9 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     @Query(value = "SELECT COUNT(*) FROM USERS WHERE username=:username", nativeQuery = true)
     Integer isDuplicateName(@Param("username") String username);
 
+    @Query(value = "SELECT COUNT(*) FROM USERS WHERE email=:email", nativeQuery = true)
+    Integer isDuplicateEmail(@Param("email") String email);
+
     @Query(value = "SELECT COUNT(*) FROM USERS WHERE password=:password", nativeQuery = true)
     Integer isExistPassword(@Param("password") String password);
 

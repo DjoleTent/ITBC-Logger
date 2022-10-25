@@ -37,7 +37,7 @@ public class ClientController {
 
     @PostMapping("/api/clients/login")
     public ResponseEntity<Map> loginClient(@RequestBody Client client) {
-        return clientService.loginAccount(client.getUsername(), client.getPassword());
+        return clientService.loginAccount(client.getUsername(), client.getPassword(),client.getEmail());
     }
 
     @PostMapping("/api/logs/create")
