@@ -13,17 +13,15 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "Logs")
+@Table(name = "NEWLOGS")
 public class Log {
 
     @Id
     private UUID Id;
     private String message;
-    private int logType;
-    private LocalDate createdDate;
+    private int LOGTYPE;
+    private String datum;
     private String token;
 
 }

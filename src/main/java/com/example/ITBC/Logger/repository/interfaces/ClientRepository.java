@@ -14,11 +14,6 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
 
     List<Client> findAll();
 
-//    @Query(value = "SELECT * FROM USERS WHERE username=:username", nativeQuery = true)
-//    Client findByUsername(String username);
-
-//    @Query(value = "SELECT * FROM USERS WHERE email=:email", nativeQuery = true)
-//    Client findByEmail(String email);
 
 
     @Query(value = "SELECT COUNT(*) FROM USERS WHERE username=:username", nativeQuery = true)

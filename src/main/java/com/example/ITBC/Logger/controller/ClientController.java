@@ -18,11 +18,9 @@ import java.util.Map;
 public class ClientController {
 
     private final ClientService clientService;
-    private final LogService logService;
 
-    public ClientController(ClientService clientService, LogService logService) {
+    public ClientController(ClientService clientService) {
         this.clientService = clientService;
-        this.logService = logService;
     }
 
     @GetMapping("/api/clients")
@@ -40,10 +38,7 @@ public class ClientController {
         return clientService.loginAccount(client.getUsername(), client.getPassword(),client.getEmail());
     }
 
-    @PostMapping("/api/logs/create")
-    public ResponseEntity<Void> createLog(HttpServletRequest request,@RequestBody Log log){
-        return logService.createLog(request,log);
-    }
+
 
 
 }

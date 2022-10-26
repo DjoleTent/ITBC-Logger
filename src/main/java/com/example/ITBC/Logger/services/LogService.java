@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,33 +27,39 @@ public class LogService {
         this.clientRepository = clientRepository;
     }
 
-    public ResponseEntity<Void> createLog(HttpServletRequest request, Log log) {
-        Log newLog = new Log(UUID.randomUUID(),log.getMessage(),log.getLogType(),java.time.LocalDate.now(),"token");
-        log.setCreatedDate(java.time.LocalDate.now());
-        String token = null;
-//        HttpSession session = request.getSession();
-//        token = (String) session.getAttribute("token");
-        List<Client> svi = clientRepository.findAll();
-        token=svi.get(svi.size() - 1).getUsername();
+    public ResponseEntity<Void> createLog(Log log, String token) {
+
+        System.out.println("----------------------------");
+        System.out.println(token);
+        System.out.println("----------------------------");
+
+        log.setDatum(LocalDateTime.now().toString());
+
         log.setToken(token);
+
         log.setId(UUID.randomUUID());
 
-        System.out.println(svi.get(svi.size() - 1).getUsername());
-        System.out.println(log.getCreatedDate());
-//        System.out.println(session);
-        System.out.println(log);
-
-        if (log.getLogType()>2){
+        if (log.getLOGTYPE() > 2) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        if (log.getMessage().length()>1024){
+        if (log.getMessage().length() > 1024) {
             return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(null);
         }
-        if (token == null) {
+        System.out.println("++++++++++");
+        System.out.println(clientRepository.isDuplicateName(token));
+        System.out.println("++++++++++");
+
+        if (clientRepository.isDuplicateName(token)!=1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        newLog.setToken(token);
-        logRepository.save(newLog);
+        log.setToken(token);
+        System.out.println(log);
+        logRepository.save(log);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
+
+    }
+    public List<Log> getAllLogs(){
+       return logRepository.findAll();
     }
 }
