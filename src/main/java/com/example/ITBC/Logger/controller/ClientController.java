@@ -1,15 +1,14 @@
 package com.example.ITBC.Logger.controller;
 
 import com.example.ITBC.Logger.model.Client;
+import com.example.ITBC.Logger.model.ClientLogType;
 import com.example.ITBC.Logger.repository.interfaces.ClientRepository;
 import com.example.ITBC.Logger.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class ClientController {
@@ -27,14 +26,22 @@ public class ClientController {
         return clientService.getAllClients();
     }
     @GetMapping("/api/clients")
-    public ResponseEntity<List<Client>> showAllClientsByAdmin(@RequestHeader(value="Authorization") String token) {
+    public ResponseEntity<List<ClientLogType>> showAllClientsByAdmin(@RequestHeader(value="Authorization") String token) {
         if(clientRepository.isDuplicateName(token)==0){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
+        // ZA ADMINA JE UZET JEDAN KONKRETAN KLIJENT I NJEGOV TOKEN JE ADMIN TOKEN
         if(clientRepository.isDuplicateName(token)==1 && !token.equals("userpokusaj9")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(clientService.getAllClientsByAdmin());
+
+        List<ClientLogType> listCLT = new ArrayList<>();
+        for(var client:clientRepository.findAll()){
+            listCLT.add(new ClientLogType(client.getId(),client.getUsername(),client.getEmail(),clientRepository.getAllLogsByClient(client.getUsername())));
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(listCLT);
     }
 
     @PostMapping("/api/clients/register")

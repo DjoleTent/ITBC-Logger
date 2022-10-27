@@ -29,4 +29,10 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     @Query(value = "SELECT * FROM USERS WHERE id = :id", nativeQuery = true)
     Client isIdExist(UUID id);
 
+    @Query(value = "SELECT u.id as id, u.username as username, u.email as email, COUNT(nl.id) as logCount FROM USERS u JOIN NEWLOGS nl ON u.username=nl.token", nativeQuery = true)
+    List<?> clientLogCount();
+
+    @Query(value = "SELECT COUNT(*) FROM USERS u JOIN NEWLOGS nl ON nl.token=u.username where nl.token=:token",nativeQuery = true)
+    int getAllLogsByClient(String token);
+
 }
