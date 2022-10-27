@@ -60,6 +60,7 @@ public class ClientController {
 
 
         clientRepository.isIdExist(id).setPassword(client.getPassword());
+        clientRepository.save(clientRepository.isIdExist(id));
         System.out.println(clientRepository.isIdExist(id));
 
 
