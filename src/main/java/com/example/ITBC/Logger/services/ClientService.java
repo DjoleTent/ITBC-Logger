@@ -70,5 +70,10 @@ public class ClientService {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
+    public List<Client> getAllClientsByAdmin() {
+        return clientRepository.findAll();
+    }
+
+
 
 }

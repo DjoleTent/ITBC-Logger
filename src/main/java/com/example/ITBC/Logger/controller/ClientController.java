@@ -1,16 +1,12 @@
 package com.example.ITBC.Logger.controller;
 
 import com.example.ITBC.Logger.model.Client;
-import com.example.ITBC.Logger.model.Log;
+import com.example.ITBC.Logger.repository.interfaces.ClientRepository;
 import com.example.ITBC.Logger.services.ClientService;
-import com.example.ITBC.Logger.services.LogService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +14,26 @@ import java.util.Map;
 public class ClientController {
 
     private final ClientService clientService;
+    private final ClientRepository clientRepository;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, ClientRepository clientRepository) {
         this.clientService = clientService;
+        this.clientRepository = clientRepository;
     }
 
-    @GetMapping("/api/clients")
+    @GetMapping("/api/clients/noadmin")
     public List<Client> showAllClients() {
         return clientService.getAllClients();
+    }
+    @GetMapping("/api/clients")
+    public ResponseEntity<List<Client>> showAllClientsByAdmin(@RequestHeader(value="Authorization") String token) {
+        if(clientRepository.isDuplicateName(token)==0){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        if(clientRepository.isDuplicateName(token)==1 && !token.equals("userpokusaj9")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(clientService.getAllClientsByAdmin());
     }
 
     @PostMapping("/api/clients/register")
