@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class ClientController {
@@ -47,6 +48,23 @@ public class ClientController {
     }
 
 
+    @PatchMapping("/api/clients/{id}/reset-password")
+    public ResponseEntity<Void> resetPassword(@PathVariable(value = "id") UUID id, @RequestHeader(value="Authorization") String token, @RequestBody Client client){
+
+        if(clientRepository.isDuplicateName(token)==0){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        if(clientRepository.isDuplicateName(token)==1 && !token.equals("userpokusaj9")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+
+        clientRepository.isIdExist(id).setPassword(client.getPassword());
+        System.out.println(clientRepository.isIdExist(id));
+
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 
 
 }

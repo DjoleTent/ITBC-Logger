@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Integer> {
@@ -25,5 +26,7 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     @Query(value = "SELECT COUNT(*) FROM USERS WHERE password=:password", nativeQuery = true)
     Integer isExistPassword(@Param("password") String password);
 
+    @Query(value = "SELECT * FROM USERS WHERE id = :id", nativeQuery = true)
+    Client isIdExist(UUID id);
 
 }
