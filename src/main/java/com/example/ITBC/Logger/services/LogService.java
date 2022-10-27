@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -62,4 +65,29 @@ public class LogService {
     public List<Log> getAllLogs(){
        return logRepository.findAll();
     }
+
+    public ResponseEntity<Void> searchLogs(String dateFrom, String dateTo, String message, int logType, String token){
+
+        Log newLog = logRepository.findByToken(token);
+
+        if(newLog==null){
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+        LocalDate dateF = LocalDate.parse(dateFrom, formatter);
+        LocalDate dateT = LocalDate.parse(dateTo, formatter);
+        LocalDate dateNow = LocalDate.parse(newLog.getDatum(), formatter);
+
+
+        if(dateNow.isAfter(dateT) || dateNow.isBefore(dateF)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        if(logType>2){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 }

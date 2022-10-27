@@ -18,6 +18,12 @@ public class LoginController {
         this.logService = logService;
         this.clientService = clientService;
     }
+
+    @GetMapping("/api/logs")
+    public List<Log> showAllLogs(){
+        return logService.getAllLogs();
+    }
+
     @PostMapping("/api/logs/create")
     public ResponseEntity<Void> createLog(@RequestBody Log log, @RequestHeader(value="Authorization") String token){
         return logService.createLog(log, token);
@@ -27,13 +33,10 @@ public class LoginController {
     public ResponseEntity<Void> search(@RequestParam("dateFrom") String createDateFrom,
                                        @RequestParam("dateTo") String createDateTo,
                                        @RequestParam("message") String message,
-                                       @RequestParam("logType") int logTypr,
+                                       @RequestParam("logType") int logType,
                                        @RequestHeader(value="Authorization") String token){
 
-        return null;
+        return logService.searchLogs(createDateFrom,createDateTo,message,logType,token);
     }
-    @GetMapping("/api/logs")
-    public List<Log> showAllLogs(){
-        return logService.getAllLogs();
-    }
+
 }
