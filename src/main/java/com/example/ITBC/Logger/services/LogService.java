@@ -66,28 +66,41 @@ public class LogService {
        return logRepository.findAll();
     }
 
-    public ResponseEntity<Void> searchLogs(String dateFrom, String dateTo, String message, int logType, String token){
+    public ResponseEntity<Log> searchLogs(String dateFrom, String dateTo, String message, int logType, String token){
 
-        Log newLog = logRepository.findByToken(token);
+        System.out.println(token);
+        Log newLog = new Log();
+        for(var log:logRepository.findAll()){
+            if(log.getToken().equals(token)){
+                newLog=log;
+            }
+        }
+
+        System.out.println("------------------------------------");
 
         if(newLog==null){
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
+        System.out.println("--------+++++++++++++++++++++++++---------");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
-        LocalDate dateF = LocalDate.parse(dateFrom, formatter);
-        LocalDate dateT = LocalDate.parse(dateTo, formatter);
-        LocalDate dateNow = LocalDate.parse(newLog.getDatum(), formatter);
+//        LocalDate dateF = LocalDate.parse(dateFrom, formatter);
+//        LocalDate dateT = LocalDate.parse(dateTo, formatter);
+//        LocalDate dateNow = LocalDate.parse(newLog.getDatum(), formatter);
 
+        System.out.println("--------?????????????????????????????????????---------");
 
-        if(dateNow.isAfter(dateT) || dateNow.isBefore(dateF)){
+//        if(dateNow.isAfter(dateT) || dateNow.isBefore(dateF) || logType>2 || !newLog.getMessage().contains(message)){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+        if(logType>2 || !newLog.getMessage().contains(message)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        if(logType>2){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+
+        System.out.println("--------.............................................---------");
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(newLog);
     }
 
 }

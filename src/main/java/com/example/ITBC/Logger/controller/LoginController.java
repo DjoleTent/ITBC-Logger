@@ -30,7 +30,7 @@ public class LoginController {
     }
 
     @GetMapping("/api/logs/search")
-    public ResponseEntity<Void> search(@RequestParam("dateFrom") String createDateFrom,
+    public ResponseEntity<Log> search(@RequestParam("dateFrom") String createDateFrom,
                                        @RequestParam("dateTo") String createDateTo,
                                        @RequestParam("message") String message,
                                        @RequestParam("logType") int logType,
