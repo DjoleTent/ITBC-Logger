@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface LogRepository  extends JpaRepository<Log, UUID> {
+public interface LogRepository extends JpaRepository<Log, UUID> {
 
     @Override
     List<Log> findAll();

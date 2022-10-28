@@ -32,10 +32,6 @@ public class LogService {
 
     public ResponseEntity<Void> createLog(Log log, String token) {
 
-        System.out.println("----------------------------");
-        System.out.println(token);
-        System.out.println("----------------------------");
-
         log.setDatum(LocalDateTime.now().toString());
 
         log.setToken(token);
@@ -48,11 +44,10 @@ public class LogService {
         if (log.getMessage().length() > 1024) {
             return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(null);
         }
-        System.out.println("++++++++++");
-        System.out.println(clientRepository.isDuplicateName(token));
-        System.out.println("++++++++++");
 
-        if (clientRepository.isDuplicateName(token)!=1) {
+        System.out.println(clientRepository.isDuplicateName(token));
+
+        if (clientRepository.isDuplicateName(token) != 1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         log.setToken(token);
@@ -62,42 +57,38 @@ public class LogService {
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
 
     }
-    public List<Log> getAllLogs(){
-       return logRepository.findAll();
+
+    public List<Log> getAllLogs() {
+        return logRepository.findAll();
     }
 
-    public ResponseEntity<Log> searchLogs(String dateFrom, String dateTo, String message, int logType, String token){
+    public ResponseEntity<Log> searchLogs(String dateFrom, String dateTo, String message, int logType, String token) {
 
         System.out.println(token);
         Log newLog = new Log();
-        for(var log:logRepository.findAll()){
-            if(log.getToken().equals(token)){
-                newLog=log;
+        for (var log : logRepository.findAll()) {
+            if (log.getToken().equals(token)) {
+                newLog = log;
             }
         }
 
-        System.out.println("------------------------------------");
 
-        if(newLog==null){
+        if (newLog == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        System.out.println("--------+++++++++++++++++++++++++---------");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
 //        LocalDate dateF = LocalDate.parse(dateFrom, formatter);
 //        LocalDate dateT = LocalDate.parse(dateTo, formatter);
 //        LocalDate dateNow = LocalDate.parse(newLog.getDatum(), formatter);
 
-        System.out.println("--------?????????????????????????????????????---------");
 
 //        if(dateNow.isAfter(dateT) || dateNow.isBefore(dateF) || logType>2 || !newLog.getMessage().contains(message)){
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 //        }
-        if(logType>2 || !newLog.getMessage().contains(message)){
+        if (logType > 2 || !newLog.getMessage().contains(message)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-
-
-        System.out.println("--------.............................................---------");
 
 
         return ResponseEntity.status(HttpStatus.OK).body(newLog);

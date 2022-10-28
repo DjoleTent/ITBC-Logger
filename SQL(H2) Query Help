@@ -1,0 +1,5 @@
+SELECT COUNT(*) FROM USERS WHERE username=:username
+SELECT COUNT(*) FROM USERS WHERE email=:email
+SELECT COUNT(*) FROM USERS WHERE password=:password
+SELECT * FROM USERS WHERE id = :id
+SELECT COUNT(*) FROM USERS u JOIN NEWLOGS nl ON nl.token=u.username where nl.token=:token

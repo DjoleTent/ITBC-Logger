@@ -7,6 +7,8 @@ Technologies:
 - Spring Boot version 2.7.4
   (Dependencies: Spring WEB, Spring Data JPA, Spring H2 database, Spring Lombok)
 
+(All queries used in this application are in _SQL(H2) Query Help_ file)
+
 ## Client
 List of endpoints for Client:
 1. Register

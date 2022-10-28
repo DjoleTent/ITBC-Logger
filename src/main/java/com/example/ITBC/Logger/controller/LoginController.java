@@ -20,23 +20,23 @@ public class LoginController {
     }
 
     @GetMapping("/api/logs")
-    public List<Log> showAllLogs(){
+    public List<Log> showAllLogs() {
         return logService.getAllLogs();
     }
 
     @PostMapping("/api/logs/create")
-    public ResponseEntity<Void> createLog(@RequestBody Log log, @RequestHeader(value="Authorization") String token){
+    public ResponseEntity<Void> createLog(@RequestBody Log log, @RequestHeader(value = "Authorization") String token) {
         return logService.createLog(log, token);
     }
 
     @GetMapping("/api/logs/search")
     public ResponseEntity<Log> search(@RequestParam("dateFrom") String createDateFrom,
-                                       @RequestParam("dateTo") String createDateTo,
-                                       @RequestParam("message") String message,
-                                       @RequestParam("logType") int logType,
-                                       @RequestHeader(value="Authorization") String token){
+                                      @RequestParam("dateTo") String createDateTo,
+                                      @RequestParam("message") String message,
+                                      @RequestParam("logType") int logType,
+                                      @RequestHeader(value = "Authorization") String token) {
 
-        return logService.searchLogs(createDateFrom,createDateTo,message,logType,token);
+        return logService.searchLogs(createDateFrom, createDateTo, message, logType, token);
     }
 
 }
